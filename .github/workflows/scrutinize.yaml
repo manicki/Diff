@@ -1,0 +1,33 @@
+name: Generate and upload test coverage
+on:
+  workflow_run:
+    workflows: ['**']
+    types:
+      - completed
+
+jobs:
+  scrutinize:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+    #  - uses: actions/checkout@v4
+    #  - name: Cache Composer packages
+    #    uses: actions/cache@v3
+    #    with:
+    #      path: vendor
+    #      key: ${{ runner.os }}-php-${{ matrix.php_version}}-${{ hashFiles('**/composer.lock') }}
+    #  - name: Install dependencies
+    #    uses: php-actions/composer@v6
+    #  - name: Generate PHP tests coverage
+    #    run: XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-clover coverage.clover
+    #  - name: Upload Scrutinizer coverage
+    #    uses: sudo-bot/action-scrutinizer@latest
+    #    with:
+    #      cli-args: "--format=php-clover ./clover.xml"
+      - run: echo 'The triggering workflow passed'
+
+  failure:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - run: echo 'The triggering workflow failed'
